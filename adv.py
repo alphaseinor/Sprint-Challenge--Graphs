@@ -137,7 +137,11 @@ visited_rooms.add(player.current_room)
 traversal(player.current_room.id)
 print(exits(player.current_room.id))
 nearest_room = search_nearest_room(player.current_room.id)
-print(backtrack(player.current_room.id, nearest_room))
+path = backtrack(player.current_room.id, nearest_room)
+
+for current in path:
+    player.travel(current)
+    traversal_path.append(current)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
