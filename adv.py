@@ -35,11 +35,11 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "maps/test_line.txt"
+# map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -60,7 +60,7 @@ reverse = {"n":"s","e":"w","s":"n","w":"e"}
 # player.current_room.get_exits() how many have ? in it?
 traversal_graph = {player.current_room.id: {d:"?" for d in player.current_room.get_exits()}}
 
-def exits (room):
+def exits(room):
     directions = []
     #for d in #need a traversal graph...
     for d in traversal_graph[room]:
@@ -68,7 +68,33 @@ def exits (room):
             directions.append(d)
     return(directions)
 
+def traversal(room):
+    while len(exits(room)) > 0:
+        random_direction = random.choice(exits(room))
+        print(random_direction)
+        # store current location as previous
+        previous = player.current_room.id
+        # move in random direction
+        player.travel(random_direction)
+        # store new location as curent
+        current = player.current_room.id
+        # add the direction that was taken to the path
+        traversal_path.append(random_direction)
 
+        #determine if we've visited before
+        if current not in traversal_graph:
+            traversal_graph[current] = {d: "?" for d in player.current_room.get_exits()}
+
+        traversal_graph[current][reverse[random_direction]] = previous
+        traversal_graph[previous][random_direction] = current
+        room = current
+
+visited_rooms = set()
+player.current_room = world.starting_room
+visited_rooms.add(player.current_room)
+
+traversal(player.current_room.id)
+print(exits(player.current_room.id))
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -100,5 +126,3 @@ else:
 #     else:
 #         print("I did not understand that command.")
 
-
-print(exits(player.current_room.id))
