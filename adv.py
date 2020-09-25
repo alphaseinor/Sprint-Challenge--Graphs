@@ -95,6 +95,7 @@ def search_nearest_room(room):
     visted = set()
 
     while q.size() > 0:
+        # room number
         node = q.dequeue()
 
         if node not in visted:
@@ -104,13 +105,38 @@ def search_nearest_room(room):
             for room in list(traversal_graph[node].values()):
                 q.enqueue(room)
 
+def backtrack(room, nearest_room):
+    q = Queue()
+    q.enqueue([room])
+    visited = set()
+    temp_node = []
+
+    while q.size() > 0:
+        node = q.dequeue()
+
+        if node[-1] == nearest_room:
+            temp_node = node
+            break
+        for room in list(traversal_graph[node[-1]].values()):
+            path = list(node) + [room]
+            q.enqueue()
+
+    result = []
+    for vertex in range(len(temp_node) - 1):
+        for current in traversal_graph[temp_node[vertex]]:
+            if traversal_graph[temp_node[vertex]][current] == temp_node[vertex+1]:
+                result.append(current)
+
+    return result
+
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
 
 traversal(player.current_room.id)
 print(exits(player.current_room.id))
-print(search_nearest_room(player.current_room.id))
+nearest_room = search_nearest_room(player.current_room.id)
+print(backtrack(player.current_room.id, nearest_room))
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
