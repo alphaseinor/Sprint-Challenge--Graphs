@@ -115,11 +115,12 @@ def backtrack(room, nearest_room):
         node = q.dequeue()
 
         if node[-1] == nearest_room:
+            visited.add(node[-1])
             temp_node = node
             break
         for room in list(traversal_graph[node[-1]].values()):
             path = list(node) + [room]
-            q.enqueue()
+            q.enqueue(path)
 
     result = []
     for vertex in range(len(temp_node) - 1):
