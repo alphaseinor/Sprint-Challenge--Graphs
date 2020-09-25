@@ -35,11 +35,11 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
+map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -69,6 +69,7 @@ def exits(room):
     return(directions)
 
 def traversal(room):
+    print("in traversal")
     while len(exits(room)) > 0:
         random_direction = random.choice(exits(room))
         print(exits(player.current_room.id))
@@ -114,7 +115,7 @@ def backtrack(room, nearest_room):
     while q.size() > 0:
         node = q.dequeue()
 
-        if node[-1] == nearest_room:
+        if node[-1] not in visited:
             visited.add(node[-1])
             temp_node = node
             break
@@ -134,14 +135,15 @@ visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
 
+# while len(traversal_graph) < len(room_graph):
 traversal(player.current_room.id)
-print(exits(player.current_room.id))
+# print(exits(player.current_room.id))
 nearest_room = search_nearest_room(player.current_room.id)
 path = backtrack(player.current_room.id, nearest_room)
 
-for current in path:
-    player.travel(current)
-    traversal_path.append(current)
+# for current in path:
+#     player.travel(current)
+#     traversal_path.append(current)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
