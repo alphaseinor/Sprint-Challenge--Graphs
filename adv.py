@@ -55,14 +55,19 @@ player = Player(world.starting_room)
 traversal_path = []
 
 # need to define opposite path is
-reverse = {"n":"s","e":"w","s","n","w","e"}
+reverse = {"n":"s","e":"w","s":"n","w":"e"}
 # player.current_room.id store in a graph?
-# player.current_room.get_exits() has ? in it?
-
+# player.current_room.get_exits() how many have ? in it?
+traversal_graph = {player.current_room.id: {d:"?" for d in player.current_room.get_exits()}}
 
 def exits (room):
     directions = []
     #for d in #need a traversal graph...
+    for d in traversal_graph[room]:
+        if traversal_graph[room][d] == "?":
+            directions.append(d)
+    return(directions)
+
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
@@ -85,12 +90,15 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
+
+
+print(exits(player.current_room.id))
