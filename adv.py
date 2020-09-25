@@ -71,7 +71,7 @@ def exits(room):
 def traversal(room):
     while len(exits(room)) > 0:
         random_direction = random.choice(exits(room))
-        print(random_direction)
+        print(exits(player.current_room.id))
         # store current location as previous
         previous = player.current_room.id
         # move in random direction
@@ -89,12 +89,28 @@ def traversal(room):
         traversal_graph[previous][random_direction] = current
         room = current
 
+def search_nearest_room(room):
+    q = Queue()
+    q.enqueue(room)
+    visted = set()
+
+    while q.size() > 0:
+        node = q.dequeue()
+
+        if node not in visted:
+            visted.add(node)
+            if len(exits(node)) > 0:
+                return node
+            for room in list(traversal_graph[node].values()):
+                q.enqueue(room)
+
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
 
 traversal(player.current_room.id)
 print(exits(player.current_room.id))
+print(search_nearest_room(player.current_room.id))
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
