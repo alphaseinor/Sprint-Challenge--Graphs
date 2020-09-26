@@ -204,7 +204,7 @@ def move(starting_room):
         for direction in directions:
             if direction in room_keys[starting_room]:
                 if room_keys[starting_room][direction] == '?':
-                    # print(direction, directions)
+                    print(direction, room_keys[starting_room])
                     move_direction(direction, starting_room)
                     traversal_index = len(traversal_path) - 1
                     update_unvisited()
